@@ -1,0 +1,22 @@
+{
+  "name": "bridgetalk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BridgeTalk Monorepo - 职能沟通翻译助手",
+  "scripts": {
+    "dev:backend": "python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000 --app-dir apps/backend",
+    "dev:frontend": "pnpm --filter @bridgetalk/frontend dev",
+    "dev:all": "concurrently \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+    "build:frontend": "pnpm --filter @bridgetalk/frontend build",
+    "build:all": "pnpm build:frontend",
+    "lint:frontend": "pnpm --filter @bridgetalk/frontend lint",
+    "typecheck:frontend": "pnpm --filter @bridgetalk/frontend exec tsc -b --noEmit"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

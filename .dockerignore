@@ -1,0 +1,50 @@
+# BridgeTalk .dockerignore
+
+# ============ Git ============
+.git
+.gitignore
+
+# ============ Docker ============
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# ============ 敏感配置 ============
+apps/backend/config.yaml
+.env
+.env.*
+
+# ============ Python ============
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ============ Node.js ============
+node_modules/
+.pnpm-store/
+
+# ============ IDE ============
+.idea/
+.vscode/
+*.iml
+
+# ============ 日志 ============
+logs/
+*.log
+
+# ============ 文档和测试 ============
+docs/
+tests/
+*.md
+!README.md
+
+# ============ 临时文件 ============
+*.tmp
+*.temp
+.cache/
+.DS_Store

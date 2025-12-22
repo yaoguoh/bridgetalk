@@ -1,0 +1,71 @@
+# BridgeTalk .gitignore
+
+# ============ 系统文件 ============
+.DS_Store
+Thumbs.db
+
+# ============ IDE / 编辑器 ============
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# ============ Python ============
+# 虚拟环境
+.venv/
+venv/
+env/
+ENV/
+
+# 字节码
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 测试和覆盖率
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# 构建产物
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Ruff / MyPy
+.ruff_cache/
+.mypy_cache/
+
+# ============ Node.js ============
+node_modules/
+.pnpm-store/
+.npm/
+
+# 构建产物
+apps/frontend/dist/
+
+# ============ 日志 ============
+logs/
+*.log
+*.log.*
+
+# ============ 敏感配置 ============
+# 本地配置文件（包含密码和 API Key）
+apps/backend/config.yaml
+.env
+.env.local
+.env.*.local
+
+# ============ 临时文件 ============
+*.tmp
+*.temp
+.cache/
+
+# ============ Alembic ============
+# 保留 versions 目录，但忽略空目录标记
+apps/backend/alembic/versions/.gitkeep

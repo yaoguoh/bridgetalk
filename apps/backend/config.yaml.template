@@ -1,0 +1,35 @@
+# BridgeTalk 配置文件模板
+# 复制此文件为 config.yaml 并填入实际值
+
+database:
+  host: "127.0.0.1"
+  port: 5432
+  username: "postgres"
+  password: "your_password_here"
+  name: "bridgetalk"
+  pool_size: 10
+  max_overflow: 5
+  pool_timeout: 30
+  pool_recycle: 3600
+  pool_pre_ping: true
+
+llm:
+  dashscope:
+    api_key: "${DASHSCOPE_API_KEY}"  # 从环境变量读取，或直接填写 API Key
+    model_name: "qwen-max"
+    temperature: 0.7
+    max_tokens: 4096
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://127.0.0.1:5173"
+
+redis:
+  host: "127.0.0.1"
+  port: 6379
+  password: ""
+  database: 0
+  key_prefix: "bridgetalk"

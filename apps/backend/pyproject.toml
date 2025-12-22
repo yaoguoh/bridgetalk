@@ -1,0 +1,269 @@
+[project]
+name = "bridgetalk"
+version = "0.1.0"
+description = "职能沟通翻译助手 - 帮助产品经理和开发工程师更好地理解彼此"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi==0.127.0",
+    "uvicorn[standard]==0.40.0",
+    "sse-starlette==3.0.4",
+    "pydantic==2.12.5",
+    "pydantic-settings==2.12.0",
+    "sqlalchemy[asyncio]==2.0.45",
+    "psycopg[binary,pool]==3.3.2",
+    "alembic==1.17.2",
+    "dependency-injector==4.48.3",
+    "langchain==1.2.0",
+    "langchain-community==0.4.1",
+    "langchain-core==1.2.5",
+    "langchain-text-splitters==1.1.0",
+    "dashscope==1.25.5",
+    "langgraph==1.0.5",
+    "langgraph-checkpoint-redis==0.3.1",
+    "redis==6.4.0",  # langgraph-checkpoint-redis 依赖 redisvl，要求 redis<7.0
+    "pyyaml==6.0.3",
+    "orjson==3.11.5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff==0.14.10",
+    "pyright==1.1.407",
+    "pytest==9.0.2",
+    "pytest-asyncio==1.3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/core", "src/domain", "src/llm"]
+
+[tool.hatch.build.targets.editable]
+dev-mode-dirs = ["src"]
+
+# ==================== Ruff 配置 ====================
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+fix = true
+src = ["src"]
+exclude = [
+    ".venv",
+    ".ruff_cache",
+    ".mypy_cache",
+    ".pytest_cache",
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",        # pycodestyle errors
+    "W",        # pycodestyle warnings
+    # pyflakes
+    "F",        # pyflakes
+    # flake8-bugbear
+    "B",        # flake8-bugbear
+    # flake8-comprehensions
+    "C4",       # flake8-comprehensions
+    # flake8-simplify
+    "SIM",      # flake8-simplify
+    # isort
+    "I",        # isort
+    # mccabe
+    "C90",      # mccabe
+    # pyupgrade
+    "UP",       # pyupgrade
+    # flake8-bandit
+    "S",        # flake8-bandit
+    # Ruff
+    "RUF",      # ruff
+    # flake8-unused-arguments
+    "ARG",      # flake8-unused-arguments
+    # flake8-use-pathlib
+    "PTH",      # flake8-use-pathlib
+    # flake8-pytest-style
+    "PT",       # flake8-pytest-style
+    # flake8-return
+    "RET",      # flake8-return
+    # pylint
+    "PL",       # pylint
+    # flake8-pie
+    "PIE",      # flake8-pie
+    # flake8-errmsg
+    "EM",       # flake8-errmsg
+    # tryceratops
+    "TRY",      # tryceratops
+    # eradicate
+    "ERA",      # eradicate
+    # flake8-async
+    "ASYNC",    # flake8-async
+]
+
+fixable = ["ALL"]
+unfixable = []
+
+# 允许下划线前缀的未使用变量
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# 允许中文标点，避免 RUF001/RUF002/RUF003 误报
+allowed-confusables = [
+    "，",
+    "。",
+    "！",
+    "？",
+    "：",
+    "；",
+    "（",
+    "）",
+    "【",
+    "】",
+    "《",
+    "》",
+    '"',
+    '"',
+    "'",
+    "'",
+    "、",
+    "⋯",
+    "…",
+    "—",
+    "－",
+]
+
+# McCabe 复杂度限制
+mccabe.max-complexity = 10
+
+[tool.ruff.lint.pylint]
+max-args = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["core", "domain", "llm", "config", "container"]
+force-single-line = false
+lines-after-imports = 2
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/*" = ["ERA001", "E501"]
+"src/config.py" = [
+    "S104",    # 开发配置允许绑定 0.0.0.0
+    "S105",    # 开发配置允许默认密码
+]
+"src/main.py" = [
+    "S104",    # 开发启动允许绑定 0.0.0.0
+]
+"src/domain/*/api/*.py" = [
+    "B008",    # FastAPI + Depends 标准模式
+]
+"src/domain/*/agent/*.py" = [
+    "TRY300",  # LangGraph 节点函数 try-return 模式
+]
+"tests/**/*.py" = [
+    "S101",    # assert 在测试中是必要的
+    "S105",    # 测试用硬编码密码
+    "S106",    # 测试用硬编码密码参数
+    "PLR2004", # 魔法数字在测试中常见
+    "PT006",   # pytest 参数化格式
+    "PT017",   # pytest.raises 断言风格
+    "B007",    # 未使用的循环变量
+    "ARG001",  # 未使用的函数参数
+    "ARG002",  # 未使用的方法参数
+    "EM101",   # 异常中的字符串字面量
+    "EM102",   # 异常中的 f-string
+    "TRY003",  # 异常消息格式
+    "ERA001",  # 注释掉的代码
+    "F841",    # 未使用的局部变量
+    "RUF001",  # 中文字符
+    "RUF059",  # 未使用的解包变量
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+
+# ==================== Pyright 配置 ====================
+[tool.pyright]
+include = ["src", "alembic"]
+exclude = [
+    "**/__pycache__",
+    ".venv",
+    "alembic/versions",
+    "tests",
+]
+extraPaths = ["src"]
+
+pythonVersion = "3.13"
+pythonPlatform = "All"
+venvPath = "../.."
+venv = ".venv"
+
+# 从 strict 降为 basic，更适合 FastAPI 依赖注入模式
+typeCheckingMode = "basic"
+
+# 类型注解强制要求
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+strictParameterNoneValue = true
+
+# 导入检查
+reportMissingImports = "error"
+reportMissingModuleSource = "none"
+reportMissingTypeStubs = "none"
+
+# 类型注解完整性
+reportUntypedFunctionDecorator = "error"
+reportUntypedClassDecorator = "error"
+reportUntypedBaseClass = "error"
+reportUntypedNamedTuple = "error"
+
+# ==================== 类型使用严格性 ====================
+# 第三方库（langchain/langgraph/redis）类型定义不完整，这些警告设为 none
+# 这不是我们代码的问题，而是库的类型桩不完整
+reportUnknownArgumentType = "none"
+reportUnknownLambdaType = "warning"
+reportUnknownVariableType = "none"
+reportUnknownMemberType = "none"
+reportUnknownParameterType = "warning"
+reportMissingParameterType = "warning"
+reportMissingTypeArgument = "error"
+
+# 常见类型错误
+reportGeneralTypeIssues = "error"
+reportOptionalSubscript = "error"
+reportOptionalMemberAccess = "error"
+reportOptionalCall = "error"
+reportOptionalIterable = "error"
+reportOptionalContextManager = "error"
+reportOptionalOperand = "error"
+
+# 代码质量检查
+reportUnusedVariable = "warning"
+reportUnusedImport = "warning"
+reportUnusedClass = "warning"
+reportUnusedFunction = "warning"
+reportDuplicateImport = "error"
+reportPrivateUsage = "error"
+reportConstantRedefinition = "error"
+reportIncompatibleMethodOverride = "error"
+reportIncompatibleVariableOverride = "error"
+
+# 语义检查
+reportUnnecessaryIsInstance = "warning"
+reportUnnecessaryCast = "warning"
+reportUnnecessaryComparison = "warning"
+reportUnnecessaryContains = "warning"
+
+# 弃用和最佳实践
+reportDeprecated = "warning"
+reportMatchNotExhaustive = "warning"
+
+# ==================== Pytest 配置 ====================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short"
