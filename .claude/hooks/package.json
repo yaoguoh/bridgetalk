@@ -1,0 +1,14 @@
+{
+  "name": "@bridgetalk/claude-hooks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:skill": "echo '{\"session_id\":\"test\",\"prompt\":\"帮我审查代码\"}' | npx tsx skill-activation-prompt.ts",
+    "test:tracker": "echo '{\"tool\":\"Edit\",\"tool_input\":{\"file_path\":\"src/main.py\"}}' | npx tsx post-tool-use-tracker.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}

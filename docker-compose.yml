@@ -3,11 +3,12 @@
 
 services:
   postgres:
-    image: postgres:15-alpine
+    image: pgvector/pgvector:pg17
     container_name: bridgetalk-postgres
     ports:
       - "5432:5432"
     environment:
+      TZ: Asia/Shanghai
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: bridgetalk
@@ -21,10 +22,11 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:7-alpine
+    image: redis/redis-stack:7.2.0-v20
     container_name: bridgetalk-redis
     ports:
       - "6379:6379"
+      - "8001:8001"
     volumes:
       - redis_data:/data
     healthcheck:

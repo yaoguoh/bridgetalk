@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "skills": {
+    "review": {
+      "type": "domain",
+      "priority": "high",
+      "description": "代码审查与重构",
+      "triggers": {
+        "keywords": [
+          "审查代码",
+          "review",
+          "检查质量",
+          "重构",
+          "代码精简",
+          "优化设计",
+          "code review",
+          "代码审查"
+        ],
+        "intentPatterns": [
+          "帮我(审查|review|检查).*代码",
+          "这段代码.*问题",
+          "重构.*建议",
+          "检查.*质量"
+        ],
+        "pathPatterns": [
+          "apps/backend/src/**/*.py",
+          "apps/frontend/src/**/*.tsx"
+        ]
+      }
+    },
+    "pkg": {
+      "type": "domain",
+      "priority": "medium",
+      "description": "依赖升级",
+      "triggers": {
+        "keywords": [
+          "pkg",
+          "upgrade",
+          "deps",
+          "升级依赖",
+          "更新包",
+          "更新依赖",
+          "npm升级",
+          "pip升级",
+          "pnpm升级"
+        ],
+        "intentPatterns": [
+          "升级.*依赖",
+          "更新.*包",
+          "检查.*过期",
+          "依赖.*最新"
+        ],
+        "pathPatterns": [
+          "package.json",
+          "pyproject.toml",
+          "pnpm-lock.yaml"
+        ]
+      }
+    },
+    "search": {
+      "type": "domain",
+      "priority": "medium",
+      "description": "多源信息检索",
+      "triggers": {
+        "keywords": [
+          "search",
+          "搜索",
+          "查询最佳实践",
+          "对比调研",
+          "怎么用",
+          "最佳实践",
+          "查一下"
+        ],
+        "intentPatterns": [
+          "搜索.*",
+          "查一下.*",
+          ".*怎么用",
+          ".*最佳实践",
+          "对比.*方案"
+        ]
+      }
+    }
+  }
+}
